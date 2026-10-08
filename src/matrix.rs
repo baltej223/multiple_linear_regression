@@ -234,4 +234,39 @@ impl MatrixOperations {
 
         result
     }
+    pub fn standardize(x: &mut Matrix, means: &[f64], stds: &[f64]) {
+        for i in 0..x.n {
+            // start at 1 because column 0 is intercept
+            for j in 1..x.m {
+                x.mat[i][j] = (x.mat[i][j] - means[j - 1]) / stds[j - 1];
+            }
+        }
+    }
+    pub fn calculate_stats(x: &Matrix) -> (Vec<f64>, Vec<f64>) {
+        let mut means = vec![0.0; x.m - 1];
+        let mut stds = vec![0.0; x.m - 1];
+
+        for j in 1..x.m {
+            let mut sum = 0.0;
+
+            for i in 0..x.n {
+                sum += x.mat[i][j];
+            }
+
+            means[j - 1] = sum / x.n as f64;
+        }
+
+        for j in 1..x.m {
+            let mut sum = 0.0;
+
+            for i in 0..x.n {
+                let diff = x.mat[i][j] - means[j - 1];
+                sum += diff * diff;
+            }
+
+            stds[j - 1] = (sum / x.n as f64).sqrt();
+        }
+
+        (means, stds)
+    }
 }
