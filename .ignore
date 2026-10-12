@@ -1,0 +1,4 @@
+.git
+*.csv
+*.lock
+target

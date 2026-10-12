@@ -53,7 +53,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         let row: HousingRow = result?;
         data.push(row);
     }
-
     let split = (data.len() as f64 * 0.8) as usize;
 
     let train_data = &data[..split];
@@ -74,12 +73,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     for (i, e) in train_data.iter().enumerate() {
         y_matrix.mat[i][0] = e.target();
     }
-    //
-    // let (means, stds) = MatrixOperations::calculate_stats(&x_matrix);
-    //
-    // MatrixOperations::standardize(&mut x_matrix, &means, &stds);
-    // MatrixOperations::standardize(&mut y_matrix, &means, &stds);
-    //
+
+    let (means, stds) = MatrixOperations::calculate_stats(&x_matrix);
+
+    MatrixOperations::standardize(&mut x_matrix, &means, &stds);
+
     let xt = MatrixOperations::transpose(&x_matrix);
     println!("Some done!:1");
     println!("XT: {} × {}", xt.n, xt.m);
@@ -105,17 +103,21 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         let mut x = Matrix::new(1, 12);
         x.mat[0] = row;
 
+        // Use TRAINING statistics
+        MatrixOperations::standardize(&mut x, &means, &stds);
+
         let predicted = predict(&coeff_matrix, &x).mat[0][0];
+
         let actual = element.target();
 
         y_actual.mat[i][0] = actual;
         y_predicted.mat[i][0] = predicted;
 
-        let error = actual - predicted;
-
         println!(
             "actual: {:.2}, predicted: {:.2}, error: {:.2}",
-            actual, predicted, error
+            actual,
+            predicted,
+            actual - predicted
         );
     }
 

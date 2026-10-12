@@ -18,3 +18,5 @@ R²:   0.6981
 Raw features    66197     47552    0.6981
 Standardized    ?????     ?????    ?????
 ```
+
+- Since its an OLS pipeline, I wanted to add ridge or lasso regression for better fit, but for that I need to change it to use gradient decent.
