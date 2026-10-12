@@ -21,7 +21,7 @@ Standardized    ?????     ?????    ?????
 
 # Benchmarking
 
-### Scikit learn
+### [Scikit learn](https://github.com/baltej223/multiple_linear_regression/blob/benchmarking/sklearn/main.py)
 
 ```
 RMSE: 66197.292121134
